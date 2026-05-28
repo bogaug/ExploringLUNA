@@ -1,0 +1,50 @@
+# Config parameters for fine-tune and inference
+# Wandb
+wandb:
+  entity: "carlobogani-chuv-centre-hospitalier-universitaire-vaudois"
+  project: "luna-ieeg-finetuning"
+  run_name: "baseline_ieeg_datasets"  
+  tags: ["luna", "ieeg", "seizure-detection"]
+  log_model: true 
+
+# Dataset paths
+bids_roots:
+  - "../dataset/ds005398"
+  - "../dataset/ds003029"
+  - "../dataset/ds004100"
+  - "../dataset/ds005448"
+  - "../dataset/ds007095"
+
+ckpt_path: "../checkpoints/LUNA/LUNA_base.safetensors"
+save_dir: "../runs/luna_ictal_wandb"
+
+# Hold-out test subjects (excluded from training/val)
+test_subjects:
+  - "sub-jh102"
+  - "sub-umf002"
+  - "sub-ummc002"
+  - "sub-STREEF04"
+  - "sub-Detroit011"
+  - "sub-UCLA20s"
+  - "sub-05"
+
+# Preprocessing
+target_sfreq: 1000
+window_sec: 5
+n_chans_out: 64
+overlap: 0.6
+
+# Training
+n_epochs: 50
+frozen_epochs: 20
+lr_head: 0.0001
+lr_backbone: 0.000005
+batch_size: 2
+grad_accum_steps: 4 
+seed: 42
+
+# Early stopping
+early_stopping_patience: 15
+
+# Inference
+prob_threshold: 0.5
