@@ -3,48 +3,53 @@
 wandb:
   entity: "carlobogani-chuv-centre-hospitalier-universitaire-vaudois"
   project: "luna-ieeg-finetuning"
-  run_name: "baseline_ieeg_datasets"  
-  tags: ["luna", "ieeg", "seizure-detection"]
-  log_model: true 
+  run_name: "all_datasets_incl_swec"
+  tags: ["luna", "ieeg", "seizure-detection", "swec-ethz"]
+  log_model: true
 
-# Dataset paths
+# Dataset paths (BIDS) TO USE ----> ds003029, ds004100 e SWEC 
 bids_roots:
-  - "../dataset/ds005398"
-  - "../dataset/ds003029"
-  - "../dataset/ds004100"
-  - "../dataset/ds005448"
-  - "../dataset/ds007095"
+  - "./dataset/ds003029"
+  - "./dataset/ds003844"
+  - "./dataset/ds004100"
+  - "./dataset/ds005398"
+  - "./dataset/ds007095"
 
-ckpt_path: "../checkpoints/LUNA/LUNA_base.safetensors"
-save_dir: "../runs/luna_ictal_wandb"
+# SWEC-ETHZ dataset 
+swec_root: "./dataset/SWEC_ETHZ"
 
-# Hold-out test subjects (excluded from training/val)
+# Hold-out test subjects SWEC 
+swec_test_subjects:
+  - "ID03"
+  - "ID07"
+  - "ID11"
+
+ckpt_path: "./checkpoints/LUNA/LUNA_base.safetensors"
+save_dir: "./runs/luna_ictal_swec"
+
+# Hold-out test subjects BIDS (excluded from training/val)
 test_subjects:
-  - "sub-jh102"
-  - "sub-umf002"
-  - "sub-ummc002"
-  - "sub-STREEF04"
-  - "sub-Detroit011"
-  - "sub-UCLA20s"
-  - "sub-05"
+  - "sub-HUP060"
+  - "sub-HUP064"
+  - "sub-HUP188"
 
 # Preprocessing
-target_sfreq: 1000
+target_sfreq: 256
 window_sec: 5
 n_chans_out: 64
-overlap: 0.6
+overlap: 0.5
 
 # Training
-n_epochs: 50
-frozen_epochs: 20
+n_epochs: 25
+frozen_epochs: 10
 lr_head: 0.0001
-lr_backbone: 0.000005
-batch_size: 2
-grad_accum_steps: 4 
+lr_backbone: 0.00001
+batch_size: 32
+grad_accum_steps: 1
 seed: 42
 
 # Early stopping
-early_stopping_patience: 15
+early_stopping_patience: 10
 
 # Inference
-prob_threshold: 0.5
+prob_threshold: 0.8
